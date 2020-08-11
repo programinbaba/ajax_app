@@ -29,6 +29,12 @@ function memo() {
         return null;
       }
     };
+
+    XHR.onerror = function () {
+      alert("Request failed");
+    };
+
+    e.preventDefault();
   })
 }
 window.addEventListener("load", memo);

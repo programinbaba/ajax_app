@@ -6,12 +6,17 @@ function check() {
   postsA = Array.from(posts);
 
   postsA.forEach(function (post) {
+
+    // 1度でも読み込んでいればpost.setAttribute("data-load", "true");を実行しdata-loadという要素を追加している    
     if (post.getAttribute("data-load") != null) {
+
+      // 2回目以降はdata-loadがnullではないもの、すなわち読み込まれたことのある投稿の場合には、処理を中断させる記述をする
       return null;
     }
     post.setAttribute("data-load", "true");
     // 投稿をクリックした場合に実行する処理を定義している
     post.addEventListener("click", (e) => {
+      
       // どの投稿をクリックしたのか、カスタムデータを利用して取得している
       const postId = post.getAttribute("data-id");
 
@@ -19,6 +24,10 @@ function check() {
       const XHR = new XMLHttpRequest();
 
       // openでリクエストを初期化する
+      // （どのようなリクエストをするのかを指定するメソッドがopen）
+      // 第一引数の目的　HTTPメソッドの指定
+      // 第二引数の目的　パスの指定（routes.rb参照）
+      // 第三引数の目的　非同期通信のON/OFF（booleanで記述）
       XHR.open("GET", `/posts/${postId}`, true);
 
       // レスポンスのタイプを指定する
@@ -56,4 +65,6 @@ function check() {
   });
 }
 
-setInterval(check, 1000);
+// check関数が1秒に1度実行されるように記述する
+// （setIntervalは、一定の間隔（時間）ごとに指定した関数などを実行できるメソッド）
+setInterval(check, 1000); // 時間はミリ秒
